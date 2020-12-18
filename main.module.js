@@ -8,6 +8,12 @@ import {
   MTLLoader
 } from '/three/examples/jsm/loaders/MTLLoader.js'
 
+import {
+  GLTFLoader
+} from '/three/examples/jsm/loaders/GLTFLoader.js'
+
+import { OrbitControls } from '/three/examples/jsm/controls/OrbitControls.js'
+
 let cube
 const scene = new THREE.Scene()
 
@@ -23,6 +29,8 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 10
 
 const renderer = new THREE.WebGLRenderer()
+
+const  controls = new OrbitControls(camera, renderer.domElement)
 
 renderer.setSize(window.innerWidth, window.innerHeight)
 
@@ -48,10 +56,10 @@ new Promise((resolve) => {
   })
 
 const render = () => {
-  if(cube) {
-    cube.rotation.x += 0.01
-    cube.rotation.y += 0.01
-  }
+  // if(cube) {
+  //   cube.rotation.x += 0.01
+  //   cube.rotation.y += 0.01
+  // }
 
   requestAnimationFrame(render)
   renderer.render(scene, camera)
