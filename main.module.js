@@ -20,12 +20,16 @@ import {
 let cube
 const scene = new THREE.Scene()
 
+// const loader = new THREE.TextureLoader()
+// const texture = loader.load('assets/pretty.jpg')
 
 // const light = new THREE.DirectionalLight('#fff', 0.9)
 // light.position.set(0,1,0)
 
 const light = new THREE.AmbientLight('#fff', 1)
 scene.add(light)
+
+let material = new THREE.MeshBasicMaterial()
 
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -42,7 +46,7 @@ document.body.appendChild(renderer.domElement)
 
 const objLoader = new OBJLoader()
 const mtlLoader = new MTLLoader()
-const controls = new OrbitControls( camera, renderer.domElement)
+const controls = new OrbitControls(camera, renderer.domElement)
 
 // new Promise(resolve => {
 //   const loadingManager = new THREE.LoadingManager()
@@ -59,11 +63,19 @@ new Promise((resolve) => {
     })
   })
   .then(materials => {
-    materials.preload()
-    objLoader.setMaterials(materials)
-    objLoader.load('assets/cube.obj', (object) => {
+    // materials.preload()
+    // objLoader.setMaterials(materials)
+    objLoader.load('assets/cube.obj', object => {
       cube = object
-      scene.add(object)
+      const loader = new THREE.TextureLoader()
+      loader.load('assets/pretty.jpg', texture => {
+        texture.encoding = THREE.sRGBEncoding
+        material.map = texture
+        material.needsUpdate = true
+        cube.children[0].material = material
+        // cube.children[0].material.color.set('#f33')
+        scene.add(object)
+      })
     })
   })
 
