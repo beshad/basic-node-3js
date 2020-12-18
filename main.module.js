@@ -12,13 +12,19 @@ import {
   GLTFLoader
 } from '/three/examples/jsm/loaders/GLTFLoader.js'
 
-import { OrbitControls } from '/three/examples/jsm/controls/OrbitControls.js'
+import {
+  OrbitControls
+} from '/three/examples/jsm/controls/OrbitControls.js'
+
 
 let cube
 const scene = new THREE.Scene()
 
-const light = new THREE.DirectionalLight('#ffffff', 0.9)
-light.position.set(-20, 0, 100)
+
+// const light = new THREE.DirectionalLight('#fff', 0.9)
+// light.position.set(0,1,0)
+
+const light = new THREE.AmbientLight('#fff', 1)
 scene.add(light)
 
 const camera = new THREE.PerspectiveCamera(
@@ -26,11 +32,9 @@ const camera = new THREE.PerspectiveCamera(
   window.innerWidth / window.innerHeight,
   0.1,
   1000)
-camera.position.z = 10
+camera.position.z = 5
 
 const renderer = new THREE.WebGLRenderer()
-
-const  controls = new OrbitControls(camera, renderer.domElement)
 
 renderer.setSize(window.innerWidth, window.innerHeight)
 
@@ -38,7 +42,15 @@ document.body.appendChild(renderer.domElement)
 
 const objLoader = new OBJLoader()
 const mtlLoader = new MTLLoader()
-// const controls = new OrbitControls( amera, renderer.domElement)
+const controls = new OrbitControls( camera, renderer.domElement)
+
+// new Promise(resolve => {
+//   const loadingManager = new THREE.LoadingManager()
+//   const sceneLoader = new GLTFLoader(loadingManager)
+//   sceneLoader.load('/assets/tree.gltf', object => {
+//     scene.add(object.scene)
+//   })
+// })
 
 
 new Promise((resolve) => {
@@ -56,10 +68,10 @@ new Promise((resolve) => {
   })
 
 const render = () => {
-  // if(cube) {
-  //   cube.rotation.x += 0.01
-  //   cube.rotation.y += 0.01
-  // }
+  if(cube) {
+    cube.rotation.x += 0.01
+    cube.rotation.y += 0.01
+  }
 
   requestAnimationFrame(render)
   renderer.render(scene, camera)
